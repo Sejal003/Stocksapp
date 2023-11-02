@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Plot from 'react-plotly.js';
+import './App.css';
 
 export class StockApi extends Component {
     constructor(props) {
@@ -18,9 +19,9 @@ export class StockApi extends Component {
         const pointerToThis = this;
         console.log(pointerToThis);
         const API_KEY = 'HGJWFG4N8AQ66ICD';
-        let StockSymbol = 'IBM'
+        let StockSymbol = 'IBM' //StockSymbol is the company for which we want to fetch the data
         let API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${StockSymbol}&outputsize=compact&apikey=${API_KEY}`
-        let stockChartXValuesFunction = [];
+        let stockChartXValuesFunction = []; //we will be ploting our graph on these axes
         let stockChartYValuesFunction = [];
 
         fetch(API_Call)
@@ -37,9 +38,9 @@ export class StockApi extends Component {
                         stockChartXValuesFunction.push(key);
                         stockChartYValuesFunction.push(data['Time Series (Daily)'][key]['1. open']);
                     }
-                    // console.log(stockChartXValuesFunction)
+                    
                     pointerToThis.setState({
-                        stockChartXValues: stockChartXValuesFunction,
+                        stockChartXValues: stockChartXValuesFunction,  //giving the values ffrom the api
                         stockChartYValues: stockChartYValuesFunction
                     });
                 }
@@ -48,8 +49,9 @@ export class StockApi extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='container'>
                 <h1>Stock Market Analysis</h1>
+                {/* now plot the graph  */}
                 <Plot
                     data={[
                         {
@@ -59,7 +61,7 @@ export class StockApi extends Component {
                             mode: 'lines+markers',
                             marker: { color: 'red' },
                         },
-                        
+
                     ]}
                     layout={{ width: 920, height: 540, title: 'A Fancy Plot' }}
                 />
